@@ -87,3 +87,4 @@ function testing_map {
 title
 testing_vector
 testing_map
+rm a.out
