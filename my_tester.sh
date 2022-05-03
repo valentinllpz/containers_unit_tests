@@ -52,7 +52,7 @@ function testing_vector {
     printf "\U1F530 Running tests with your vector... "
     g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra vector_tests.cpp && ./a.out > vector_your_output.log & spinner
     printf "\U1F440 Comparing both outputs...${BRIGHT}"
-    if diff vector_stl_output.log vector_your_output.log & spinner
+    if diff vector_stl_output.log vector_your_output.log
     then
         printf "\n>>> VECTOR TESTS CLEAR \u2705\n"
         rm -rf *.log
@@ -72,7 +72,7 @@ function testing_map {
     printf "\U1F530 Running tests with your map... "
     g++ -fsanitize=address -g3 -std=c++98 -Wall -Werror -Wextra map_tests.cpp && ./a.out > map_your_output.log & spinner
     printf "\U1F440 Comparing both outputs...${BRIGHT}"
-    if diff map_stl_output.log map_your_output.log & spinner
+    if diff map_stl_output.log map_your_output.log
     then
         printf "\n>>> MAP TESTS CLEAR \u2705\n"
         rm -rf *.log

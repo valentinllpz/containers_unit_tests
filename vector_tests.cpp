@@ -6,7 +6,7 @@
 /*   By: vlugand- <vlugand-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 00:19:36 by vlugand-          #+#    #+#             */
-/*   Updated: 2022/05/03 02:22:07 by vlugand-         ###   ########.fr       */
+/*   Updated: 2022/05/03 02:47:24 by vlugand-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 	#include <vector>
 	namespace ft = std;
 #else
-	#include "vector.hpp"
+	#include "../vector.hpp"
 #endif
 
 #define	MAX_SIZE 2048 // INT VALUE ONLY
