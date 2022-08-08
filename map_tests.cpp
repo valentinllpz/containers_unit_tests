@@ -6,27 +6,39 @@
 /*   By: vlugand- <vlugand-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 00:19:36 by vlugand-          #+#    #+#             */
-/*   Updated: 2022/05/03 02:47:15 by vlugand-         ###   ########.fr       */
+/*   Updated: 2022/08/08 16:43:24 by vlugand-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
+#include <string>
+#include <sstream>
 
 #ifdef STL
 	#include <map>
 	namespace ft = std;
 #else
-	#include "../map.hpp"
+	#include "map.hpp"
 #endif
 
-#define	MAX_SIZE 2048 // INT VALUE ONLY
+#define	MAX_SIZE 10000 // INT VALUE ONLY
+#define SEED 42
+
+std::string		itoa_cpp(int nb)
+{
+	std::stringstream	out;
+
+	out << nb;
+	return (out.str());
+}
 
 template <typename T, typename U>
 void	print_details(ft::map<T,U> &m)
 {
-	std::cout << "printing content: " << std::endl;
+	std::cout << "printing details: " << std::endl;
+	std::cout << "content: " << std::endl;
 	for (typename ft::map<T,U>::iterator it = m.begin(); it != m.end(); it++)
 		std::cout << "[" << it->first << "] [" << it->second << "]" << std::endl;
 	std::cout << "size = " << m.size() << std::endl; 
@@ -34,6 +46,7 @@ void	print_details(ft::map<T,U> &m)
 		std::cout << "m is empty" << std::endl;
 	else
 		std::cout << "m is not empty" << std::endl;
+	std::cout << "--------- details printed" << std::endl;
 }
 
 void	testing_access()
@@ -102,19 +115,19 @@ void	testing_clear()
 
 void	testing_swap()
 {
-	ft::map<int,int> m;
-	ft::map<int,int> mbis;
+	ft::map<std::string,std::string> m;
+	ft::map<std::string,std::string> mbis;
 
 	std::cout << "\n********* testing_swap() *********\n" << std::endl;
 	for (int i = 0; i < MAX_SIZE; i++)
-		m.insert(ft::make_pair(rand() % RAND_MAX, rand() % RAND_MAX));
+		m.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), itoa_cpp(rand() % MAX_SIZE)));
 	for (int i = 0; i < MAX_SIZE; i++)
-		mbis.insert(ft::make_pair(rand() % RAND_MAX, rand() % RAND_MAX));
+		mbis.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), itoa_cpp(rand() % MAX_SIZE)));
 	m.swap(mbis);
-	m.insert(ft::make_pair(rand() % RAND_MAX, rand() % RAND_MAX));
-	m.erase(rand() % MAX_SIZE);
-	m.insert(ft::make_pair(rand() % RAND_MAX, rand() % RAND_MAX));
-	mbis.erase(rand() % MAX_SIZE);
+	m.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), itoa_cpp(rand() % MAX_SIZE)));
+	while (m.erase(itoa_cpp(rand() % MAX_SIZE)) == 0);
+	m.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), itoa_cpp(rand() % MAX_SIZE)));
+	while (mbis.erase(itoa_cpp(rand() % MAX_SIZE)) == 0);
 	std::cout << "\nm after swap:" << std::endl;
 	print_details(m);
 	std::cout << "\nmbis after swap:" << std::endl;
@@ -136,6 +149,12 @@ void	testing_erase()
 	for (int i = 0; i < rand() % MAX_SIZE && it != m.end(); i++)
 		it++;
 	m.erase(it);
+	it = m.begin();
+	std::cout << "m.begin() = [" << it->first << "] [" << it->second << ']' << std::endl;
+	m.erase(it);
+	it = m.begin();
+	std::cout << "[after m.erase(it)]  m.begin() = [" << it->first << "] [" << it->second << ']' << std::endl;
+	print_details(m);
 	print_details(m);
 	std::cout << "\n(2) with key:" << std::endl;
 	rit = m.rbegin();
@@ -244,11 +263,17 @@ void	testing_find()
 
 	std::cout << "\n********* testing_find() *********\n" << std::endl;
 	for (int i = 0; i < MAX_SIZE; i++)
-		m.insert(ft::make_pair(rand() % MAX_SIZE, rand() % MAX_SIZE));
+		m.insert(ft::make_pair(rand() % RAND_MAX, rand() % RAND_MAX));
 	for (int i = 0; i < MAX_SIZE; i++)
 	{
-		if ((it = m.find(i)) != m.end())
+		int value = RAND_MAX;
+		if ((it = m.find(value)) != m.end())
+		{
 			m.erase(it);
+			if (m.find(value) != m.end())
+				std::cout << "value should not be found" << std::endl;
+		}
+		
 	}
 	print_details(m);
 	std::cout << "\n************** END **************\n" << std::endl;
@@ -357,12 +382,62 @@ void	testing_constructors()
 	std::cout << "\n************** END **************\n" << std::endl;
 }
 
+void	testing_relational_op()
+{
+	ft::map<std::string,int> m;
+	ft::map<std::string,int> mbis;
+
+	std::cout << "\n********* testing_relational_op() *********\n" << std::endl;
+	for (int i = 0; i < MAX_SIZE; i++)
+		m.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), rand() % MAX_SIZE));
+	mbis = m;
+	if (m == mbis)
+		std::cout << "m == mbis" << std::endl;
+	for (int i = 0; i < MAX_SIZE; i++)
+		mbis.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), rand() % MAX_SIZE));
+	if (m != mbis)
+		std::cout << "m != mbis" << std::endl;
+	if (m <= mbis)
+		std::cout << "m <= mbis" << std::endl;
+	if (m >= mbis)
+		std::cout << "m >= mbis" << std::endl;
+	std::cout << "\n************** END **************\n" << std::endl;
+}
+
+void	testing_iterators()
+{
+	ft::map<std::string,int> m;
+	ft::map<std::string,int>::iterator it;
+	ft::map<std::string,int>::const_iterator cit;
+	ft::map<std::string,int>::reverse_iterator rit;
+	ft::map<std::string,int>::const_reverse_iterator crit;
+
+	std::cout << "\n********* testing_iterators() *********\n" << std::endl;
+	for (int i = 0; i < MAX_SIZE; i++)
+		m.insert(ft::make_pair(itoa_cpp(rand() % MAX_SIZE), rand() % MAX_SIZE));
+	it = m.begin();
+	cit = m.begin();
+	if (it == cit)
+		std::cout << "it == cit" << std::endl;
+	it = m.end();
+	cit = m.end();
+	if (it == cit)
+		std::cout << "it == cit" << std::endl;
+	rit = m.rbegin();
+	crit = m.rbegin();
+	if (rit == crit)
+		std::cout << "rit == crit" << std::endl;
+	rit = m.rend();
+	crit = m.rend();
+	if (rit == crit)
+		std::cout << "rit == crit" << std::endl;
+	std::cout << "\n************** END **************\n" << std::endl;
+}
+
 int main ()
 {
+	srand(SEED);
 
-	ft::map<int,int> m; // just testing ints here
-	// first thing to test: modifiers with basic constructors // faire des try catch ?
-	
 	std::cout << ">>>>>>>>>>>>>>>> TESTING MAP <<<<<<<<<<<<<<<<<" << std::endl;
 	// from now on size(), iterator, reverse iterator and basic constructor are required
 	
@@ -383,6 +458,8 @@ int main ()
 	testing_range();
 	testing_getalloc();
 	testing_constructors();
+	testing_relational_op();
+	testing_iterators();
 
 	std::cout << ">>>>>>>>>>>>>>>> END MAP TESTS <<<<<<<<<<<<<<<<<" << std::endl;
 
