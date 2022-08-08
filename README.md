@@ -2,7 +2,7 @@
 
 ![title](screenshots/title.png)
 
-This is a tester for the [42](https://42.fr/en/homepage/) project [ft_containers](https://github.com/valentinllpz/ft_containers). It will test [vector], [stack] and [map] with random values and compare the output with STL containers. The time used by both will also be displayed.
+This is a tester for the [42](https://42.fr/en/homepage/) project [ft_containers](https://github.com/valentinllpz/ft_containers). It will test `vector`, `stack` and `map` with random values and compare the output with STL containers. The time used by both will also be displayed.
 You can run heavier tests by editing the MAX_SIZE macro in .cpp files. 
 
 If any diff or error happens, log files will be kept, so you can have look and understand what you got wrong.
